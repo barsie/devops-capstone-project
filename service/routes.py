@@ -110,14 +110,10 @@ def update_account(account_id):
     account = Account.find(account_id)
     if not account:
         # Account not found, return 404
-        return jsonify({"message": "Account not found"}), status.HTTP_400_BAD_REQUEST
+        return jsonify({"message": "Account not found"}), status.HTTP_404_NOT_FOUND
 
-        account = Account.find(account_id)
-        if not account:
-            abort(status.HTTP_404_NOT_FOUND, f"Account with id [{account_id}] could not be found.")
-
-        account.deserialize(request.get_json())
-        account.update()
+    account.deserialize(request.get_json())
+    account.update()
 
     # Serialize updated account and return 200 OK
     return account.serialize(), status.HTTP_200_OK
